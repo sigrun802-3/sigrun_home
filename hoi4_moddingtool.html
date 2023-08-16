@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Sigrun802.3">
+    <meta description="Heart of Iron 4 Hoi4 mod製作支援ツール ">
+    <link rel="icon" href="asf.ico" type="image/x-icon" />
+    <title>Hoi4 mod製作支援ツール</title>
+</head>
+<body>
+    <h1>hoi4 mod製作支援ツール</h1>
+    <h2>キャラクター追加(現在は国家元首のみ)</h2>
+    <p>国家タグは勝手に大文字に変換されるので小文字でも大丈夫です。</p>
+    <p>他にやるべきこととしては、ポートレートとローカライゼーションを追加することです。</p>
+    <form>
+        <ul>
+            <li>
+                <label for="tag">国家タグ</label>
+                <input type="text" id="tag" name="country_tag" maxlength="3" />
+            </li>
+            <li>
+                <label for="name">名前</label>
+                <input type="text" id="name" name="character_name" />
+            </li>
+            <li>
+                <label for="ideology">イデオロギー</label>
+                <input type="text" id="ideology" name="character_ideology" />
+            </li>
+            <li>
+                <label for="output">出力:</label>
+                <textarea id="output" name="character_output" rows="30" cols="100" disabled></textarea>
+              </li>
+        </ul>
+    </form>
+    <script>
+        let output = document.getElementById("output");
+        let tag=document.getElementById("tag");
+        let name = document.getElementById("name");
+        let ideology = document.getElementById("ideology");
+        function change(){
+            let tagv=tag.value
+            tagv=tagv.toUpperCase()
+            let namev=name.value
+            namev=namev.toLowerCase()
+            let chara_id=tagv+"_"+namev
+            output.textContent="\
+#charactersに追加する\n"+chara_id+"\
+={\nname="+chara_id+"\nportraits={\ncivilian={\nlarge=GFX_portrait_"+chara_id+"\n}\n}\ncountry_leader={\nideology="+ideology.value+"\ntraits={ }\nexpire=\"2100.1.1.1\"\nid=-1\n}}\n\
+#_leader_portraits.gfxに追加する\n\
+spriteType = {\n\
+    name = GFX_portrait_"+chara_id+"\n\
+    texturefile = \"gfx/leaders/"+tagv+"/Portrait_"+namev+".dds\"\n\
+}\n\
+#historyに追加する\n\
+recruit_character = "+chara_id+"\n\
+"
+        }
+        tag.addEventListener("change",change)
+        name.addEventListener("change",change)
+        ideology.addEventListener("change",change)
+    </script>
+</body>
+</html>
